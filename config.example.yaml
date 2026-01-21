@@ -1,0 +1,74 @@
+# EdgeRouter Backup Tool - Configuration Example
+# Copy this file to 'config.yaml' and customize for your environment
+
+# EdgeRouter connection settings
+edgerouter:
+  # IP address or hostname of your EdgeRouter
+  host: "192.168.1.1"
+
+  # SSH port (default: 22)
+  port: 22
+
+  # Username (typically 'admin')
+  username: "admin"
+
+  # Path to SSH private key
+  # Use ~/.ssh/id_rsa, ~/.ssh/id_ed25519, or path to dedicated key
+  ssh_key_path: "~/.ssh/id_rsa"
+
+# GitHub repository settings
+github:
+  # Local path to Git repository (will be created if doesn't exist)
+  # This directory will contain your backups organized by date
+  repo_path: "~/edgerouter-backup"
+
+  # GitHub remote URL (SSH format)
+  # Example: git@github.com:username/edgerouter-backup.git
+  # Make sure this repository is PRIVATE for security
+  remote: "git@github.com:yourusername/edgerouter-backup.git"
+
+  # Automatically push to GitHub after each backup
+  auto_push: true
+
+# Backup settings
+backup:
+  # Number of days to keep backup files in repository
+  # Git history preserves all commits even after file deletion
+  retention_days: 30
+
+  # Backup formats to generate
+  # tar.gz: Web UI compatible archive for restore
+  # cfg: Plain text configuration for human reading and git diff
+  formats:
+    - tar.gz
+    - cfg
+
+# Notification settings
+notifications:
+  # Enable macOS native notifications
+  macos_native: true
+
+  # Notify on successful backup
+  on_success: true
+
+  # Notify on backup failure
+  on_failure: true
+
+  # Include change status in notification
+  # (whether config changed since last backup)
+  on_changes: true
+
+# Logging settings
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  # INFO recommended for normal use
+  level: "INFO"
+
+  # Log file path (relative to repo_path or absolute)
+  file: "logs/backup.log"
+
+  # Maximum log file size in MB before rotation
+  max_size_mb: 10
+
+  # Number of rotated log files to keep
+  backup_count: 5

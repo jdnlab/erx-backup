@@ -1,0 +1,13 @@
+# EdgeRouter Backup Tool - Python Dependencies
+
+# SSH client for connecting to EdgeRouter
+paramiko>=3.0.0
+
+# YAML configuration file parsing
+PyYAML>=6.0
+
+# Git operations (alternative: use subprocess)
+GitPython>=3.1.0
+
+# macOS notifications (optional - can use osascript via subprocess instead)
+# pync>=2.0.3
