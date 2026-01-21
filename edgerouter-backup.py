@@ -156,7 +156,7 @@ def download_config(ssh, config, test_mode=False):
             logging.info("Retrieving configuration archive...")
 
             # Generate backup on EdgeRouter
-            stdin, stdout, stderr = ssh.exec_command('/opt/vyatta/bin/ubnt-save-config.sh')
+            stdin, stdout, stderr = ssh.exec_command(f"gzip -zcf config.boot.tar.gz /config")
             stdout.channel.recv_exit_status()  # Wait for completion
 
             # Download the backup file
@@ -170,21 +170,23 @@ def download_config(ssh, config, test_mode=False):
             backup_files['tar.gz'] = local_tar
 
         # Get plain text configuration (.cfg)
-        if 'cfg' in config['backup']['formats']:
-            logging.info("Retrieving text configuration...")
+        # if 'cfg' in config['backup']['formats']:
+        #     logging.info("Retrieving text configuration...")
 
-            stdin, stdout, stderr = ssh.exec_command('show configuration commands')
-            cfg_content = stdout.read().decode('utf-8')
+        #     stdin, stdout, stderr = ssh.exec_command('show configuration commands')
+        #     cfg_content = stdout.read().decode('utf-8')
 
-            local_cfg = os.path.join(temp_dir, 'config.cfg')
-            with open(local_cfg, 'w') as f:
-                f.write(cfg_content)
+        #     print(cfg_content)
 
-            cfg_size = os.path.getsize(local_cfg)
-            logging.info(f"  - cfg: {cfg_size:,} bytes")
-            backup_files['cfg'] = local_cfg
+        #     local_cfg = os.path.join(temp_dir, 'config.cfg')
+        #     with open(local_cfg, 'w') as f:
+        #         f.write(cfg_content)
 
-        logging.info("✓ Configuration retrieved")
+        #     cfg_size = os.path.getsize(local_cfg)
+        #     logging.info(f"  - cfg: {cfg_size:,} bytes")
+        #     backup_files['cfg'] = local_cfg
+
+        # logging.info("✓ Configuration retrieved")
         return backup_files, temp_dir
 
     except Exception as e:
